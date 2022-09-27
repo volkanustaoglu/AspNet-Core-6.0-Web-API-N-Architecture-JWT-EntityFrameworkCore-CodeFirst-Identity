@@ -18,7 +18,6 @@ namespace ProjectApp.Repository.DbContexts
 
         }
 
-        public DbSet<AppRole> AppRoles { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<UserRefreshToken> UserRefreshTokens { get; set; }
@@ -26,7 +25,10 @@ namespace ProjectApp.Repository.DbContexts
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-               
+
+            modelBuilder.Entity<Product>().HasQueryFilter(b => b.RowOptions  == 0);
+            modelBuilder.Entity<AppUser>().HasQueryFilter(b => b.RowOptions == 0);
+
             base.OnModelCreating(modelBuilder);
         }
 

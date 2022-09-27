@@ -56,20 +56,33 @@ builder.Services.Configure<CustomTokenOption>(builder.Configuration.GetSection("
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//builder.Services.AddSwaggerGen(c =>
-//{
-//    c.SwaggerDoc("v1", new OpenApiInfo { Title = "ApiPlayground", Version = "v1" });
-//    c.AddSecurityDefinition("token", new OpenApiSecurityScheme
-//    {
-//        Type = SecuritySchemeType.ApiKey,
-//        In = ParameterLocation.Header,
-//        Name = HeaderNames.Authorization,
-//        Scheme = "Bearer"
-//    });
-//    // dont add global security requirement
-//    // c.AddSecurityRequirement(/*...*/);
-//    c.OperationFilter<SecureEndpointAuthRequirementFilter>();
-//});
+builder.Services.AddSwaggerGen(option =>
+{
+    option.SwaggerDoc("v1", new OpenApiInfo { Title = "ProjectApp.API", Version = "v1" });
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
 
 builder.Services.AddScoped(typeof(NotFoundFilter<>));
 

@@ -5,15 +5,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ProjectApp.Repository.Migrations
 {
-    public partial class initialIdentity : Migration
+    public partial class test : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "RowOptions",
+                table: "Products",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "RowOptions",
+                table: "Categories",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RowOptions = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -28,6 +43,7 @@ namespace ProjectApp.Repository.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RowOptions = table.Column<int>(type: "int", nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -174,49 +190,49 @@ namespace ProjectApp.Repository.Migrations
                 keyColumn: "Id",
                 keyValue: 1,
                 column: "CreatedDate",
-                value: new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9613));
+                value: new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1565));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 2,
                 column: "CreatedDate",
-                value: new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9623));
+                value: new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1575));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 3,
                 column: "CreatedDate",
-                value: new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9624));
+                value: new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1576));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 4,
                 column: "CreatedDate",
-                value: new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9625));
+                value: new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1577));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 5,
                 column: "CreatedDate",
-                value: new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9626));
+                value: new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1578));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 6,
                 column: "CreatedDate",
-                value: new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9627));
+                value: new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1579));
 
             migrationBuilder.UpdateData(
                 table: "Products",
                 keyColumn: "Id",
                 keyValue: 7,
                 column: "CreatedDate",
-                value: new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9628));
+                value: new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1580));
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -283,6 +299,14 @@ namespace ProjectApp.Repository.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "RowOptions",
+                table: "Products");
+
+            migrationBuilder.DropColumn(
+                name: "RowOptions",
+                table: "Categories");
 
             migrationBuilder.UpdateData(
                 table: "Products",

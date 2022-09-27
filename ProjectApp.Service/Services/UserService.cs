@@ -2,6 +2,7 @@
 using AutoMapper.Internal.Mappers;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using ProjectApp.Core.DTOS;
 using ProjectApp.Core.DTOS.UserDtos;
 using ProjectApp.Core.Models;
@@ -57,16 +58,64 @@ namespace ProjectApp.Service.Services
             return CustomResponseDto<AppUserDto>.Success(200, _mapper.Map<AppUserDto>(user));
         }
 
-      
+        public async Task<CustomResponseDto<List<AppUserDto>>> GetAllUsersAsync()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            var usersDto = _mapper.Map<List<AppUserDto>>(users);
+
+            return CustomResponseDto<List<AppUserDto>>.Success(200, usersDto);
+        }
+
+        public async Task<CustomResponseDto<AppUserDto>> GetUserByIdAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user ==null)
+            {
+                return CustomResponseDto<AppUserDto>.Fail(400, "Bu id'ye sahip kayıt bulunmamaktadır.");
+            }
+            var userDto = _mapper.Map<AppUserDto>(user);
+            return CustomResponseDto<AppUserDto>.Success(200, userDto);
+        }
 
         public async Task<CustomResponseDto<AppUserDto>> GetUserByNameAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
             if (user == null)
             {
-                return CustomResponseDto<AppUserDto>.Fail(404, "UserName nor found");
+                return CustomResponseDto<AppUserDto>.Fail(404, "UserName not found");
             }
             return CustomResponseDto<AppUserDto>.Success(200, _mapper.Map<AppUserDto>(user));
+        }
+
+        public async Task RemoveUserAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            user.RowOptions = 1;
+            await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<CustomResponseDto<UpdateUserDto>> UpdateUserAync(UpdateUserDto updateUserDto)
+        {
+            var user = await _userManager.FindByIdAsync(updateUserDto.Id);
+
+            if (user==null)
+            {
+                return CustomResponseDto<UpdateUserDto>.Fail(404, "User not found");
+            }
+            user.UserName = updateUserDto.UserName ?? user.UserName;
+            user.PhoneNumber = updateUserDto.PhoneNumber ?? user.PhoneNumber;
+            user.Email =updateUserDto.Email ?? user.Email;
+            var userUpdate = await _userManager.UpdateAsync(user);
+            if (userUpdate.Succeeded)
+            {
+                var userDto = _mapper.Map<UpdateUserDto>(user);
+
+                return CustomResponseDto<UpdateUserDto>.Success(200, userDto);
+
+            }
+            return CustomResponseDto<UpdateUserDto>.Fail(404, "Error");
+
         }
     }
 }

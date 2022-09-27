@@ -12,8 +12,8 @@ using ProjectApp.Repository.DbContexts;
 namespace ProjectApp.Repository.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220925043120_initialIdentity")]
-    partial class initialIdentity
+    [Migration("20220926165332_test")]
+    partial class test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,6 +147,9 @@ namespace ProjectApp.Repository.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
+                    b.Property<int>("RowOptions")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -199,6 +202,9 @@ namespace ProjectApp.Repository.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<int>("RowOptions")
+                        .HasColumnType("int");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
@@ -238,6 +244,9 @@ namespace ProjectApp.Repository.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<int>("RowOptions")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("datetime2");
 
@@ -250,19 +259,22 @@ namespace ProjectApp.Repository.Migrations
                         {
                             Id = 1,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Kalemler"
+                            Name = "Kalemler",
+                            RowOptions = 0
                         },
                         new
                         {
                             Id = 2,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Kitaplar"
+                            Name = "Kitaplar",
+                            RowOptions = 0
                         },
                         new
                         {
                             Id = 3,
                             CreatedDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Name = "Defterler"
+                            Name = "Defterler",
+                            RowOptions = 0
                         });
                 });
 
@@ -288,6 +300,9 @@ namespace ProjectApp.Repository.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("RowOptions")
+                        .HasColumnType("int");
+
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
@@ -305,63 +320,70 @@ namespace ProjectApp.Repository.Migrations
                         {
                             Id = 1,
                             CategoryId = 1,
-                            CreatedDate = new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9613),
+                            CreatedDate = new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1565),
                             Name = "Kalem 1",
                             Price = 100m,
+                            RowOptions = 0,
                             Stock = 20
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedDate = new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9623),
+                            CreatedDate = new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1575),
                             Name = "Kalem 2",
                             Price = 200m,
+                            RowOptions = 0,
                             Stock = 24
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 1,
-                            CreatedDate = new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9624),
+                            CreatedDate = new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1576),
                             Name = "Kalem 3",
                             Price = 30m,
+                            RowOptions = 0,
                             Stock = 30
                         },
                         new
                         {
                             Id = 4,
                             CategoryId = 2,
-                            CreatedDate = new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9625),
+                            CreatedDate = new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1577),
                             Name = "Kitap 1",
                             Price = 100m,
+                            RowOptions = 0,
                             Stock = 20
                         },
                         new
                         {
                             Id = 5,
                             CategoryId = 2,
-                            CreatedDate = new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9626),
+                            CreatedDate = new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1578),
                             Name = "Kitap 2",
                             Price = 200m,
+                            RowOptions = 0,
                             Stock = 24
                         },
                         new
                         {
                             Id = 6,
                             CategoryId = 2,
-                            CreatedDate = new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9627),
+                            CreatedDate = new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1579),
                             Name = "Kitap 3",
                             Price = 30m,
+                            RowOptions = 0,
                             Stock = 30
                         },
                         new
                         {
                             Id = 7,
                             CategoryId = 3,
-                            CreatedDate = new DateTime(2022, 9, 25, 7, 31, 20, 275, DateTimeKind.Local).AddTicks(9628),
+                            CreatedDate = new DateTime(2022, 9, 26, 19, 53, 32, 735, DateTimeKind.Local).AddTicks(1580),
                             Name = "Defter 1",
                             Price = 30m,
+                            RowOptions = 0,
                             Stock = 30
                         });
                 });

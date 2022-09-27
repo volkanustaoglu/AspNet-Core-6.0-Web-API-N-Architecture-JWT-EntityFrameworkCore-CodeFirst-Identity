@@ -61,7 +61,7 @@ namespace ProjectApp.Service.Services
 
         public async Task RemoveAsync(T entity)
         {
-            _repository.Remove(entity);
+            _repository.Update(entity);
             await _unitOfWork.CommitAsync();
         }
 

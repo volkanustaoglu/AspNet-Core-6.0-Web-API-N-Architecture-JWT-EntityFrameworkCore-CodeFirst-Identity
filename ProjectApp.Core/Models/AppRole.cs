@@ -9,6 +9,6 @@ namespace ProjectApp.Core.Models
 {
     public class AppRole: IdentityRole
     {
-
+        public int RowOptions { get; set; }
     }
 }

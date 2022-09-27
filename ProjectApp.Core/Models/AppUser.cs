@@ -10,6 +10,6 @@ namespace ProjectApp.Core.Models
 {
     public class AppUser:IdentityUser
     {
-    
+        public int RowOptions { get; set; }
     }
 }

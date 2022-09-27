@@ -21,7 +21,8 @@ namespace ProjectApp.Service.Mapping
             CreateMap<ProductUpdateDto, Product>();
             CreateMap<Product, ProductWithCategoryDto>();
             CreateMap<Category, CategoryWithProductsDto>();
-            CreateMap<AppUser, AppUserDto>();
+            CreateMap<AppUser, AppUserDto>().ReverseMap();
+            CreateMap<AppUser, UpdateUserDto>().ReverseMap();
             CreateMap<AppRole, AppRoleDto>();
         }
     }

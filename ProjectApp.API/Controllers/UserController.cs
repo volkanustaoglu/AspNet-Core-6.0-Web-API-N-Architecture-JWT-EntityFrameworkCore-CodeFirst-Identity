@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProjectApp.Core.DTOS;
+using ProjectApp.Core.DTOS.ProductDtos;
 using ProjectApp.Core.DTOS.UserDtos;
+using ProjectApp.Core.Models;
 using ProjectApp.Core.Services;
 
 namespace ProjectApp.API.Controllers
@@ -10,10 +14,12 @@ namespace ProjectApp.API.Controllers
     public class UserController : CustomBaseController
     {
         private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserService userService)
+        public UserController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpPost]
@@ -22,12 +28,36 @@ namespace ProjectApp.API.Controllers
             return CreateActionResult(await _userService.CreateUserAsync(createUserDto));
         }
 
-        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> GetUser()
+
+        public async Task<IActionResult> GetAllUsers()
         {
-            return CreateActionResult(await _userService.GetUserByNameAsync(HttpContext.User.Identity.Name));
+            return CreateActionResult(await _userService.GetAllUsersAsync());
         }
+
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Remove(string id)
+        {
+            await _userService.RemoveUserAsync(id);
+
+            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
+        }
+
+        [HttpGet("GetUserById/{id}")]
+        public async Task<IActionResult> GetUserById(string id)
+        {
+            var user = await _userService.GetUserByIdAsync(id);
+
+            return CreateActionResult(user);
+        }
+
+        
+
+        //public async Task<IActionResult> GetUser()
+        //{
+        //    return CreateActionResult(await _userService.GetUserByNameAsync(HttpContext.User.Identity.Name));
+        //}
 
         [HttpPost("CreateRole")]
         public async Task<IActionResult> CreateRole(CreateRoleDto createRoleDto)
@@ -35,7 +65,15 @@ namespace ProjectApp.API.Controllers
             return CreateActionResult(await _userService.CreateRoleAsync(createRoleDto));
         }
 
-       
+        [HttpPut]
+        public async Task<IActionResult> Update(UpdateUserDto updateUserDto)
+        {
+            await _userService.UpdateUserAync(updateUserDto);
+
+            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
+        }
+
+
 
     }
 }

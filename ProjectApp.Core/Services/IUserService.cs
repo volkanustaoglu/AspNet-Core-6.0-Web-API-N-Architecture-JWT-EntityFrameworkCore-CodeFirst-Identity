@@ -1,5 +1,6 @@
 ﻿using ProjectApp.Core.DTOS;
 using ProjectApp.Core.DTOS.UserDtos;
+using ProjectApp.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,14 @@ namespace ProjectApp.Core.Services
         Task<CustomResponseDto<AppUserDto>> GetUserByNameAsync(string userName);
 
         Task<CustomResponseDto<AppRoleDto>> CreateRoleAsync(CreateRoleDto createRoleDto);
-     
+
+        Task<CustomResponseDto<List<AppUserDto>>> GetAllUsersAsync();
+
+        Task RemoveUserAsync(string id);
+
+        Task<CustomResponseDto<AppUserDto>> GetUserByIdAsync(string id);
+        Task<CustomResponseDto<UpdateUserDto>> UpdateUserAync(UpdateUserDto updateUserDto);
+
 
 
     }

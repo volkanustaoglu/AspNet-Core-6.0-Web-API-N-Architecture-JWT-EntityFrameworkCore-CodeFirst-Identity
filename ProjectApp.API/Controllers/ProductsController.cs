@@ -58,6 +58,7 @@ namespace ProjectApp.API.Controllers
         public async Task<IActionResult> Remove(int id)
         {
             var product = await _service.GetByIdAsync(id);
+            product.RowOptions = 1;
             await _service.RemoveAsync(product);
 
             return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
