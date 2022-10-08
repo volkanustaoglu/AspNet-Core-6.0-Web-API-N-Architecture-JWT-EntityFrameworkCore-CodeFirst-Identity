@@ -36,10 +36,17 @@ namespace ProjectApp.API.Controllers
         }
 
 
-        [HttpDelete("{id}")]
+        [HttpDelete("[action]/{id}")]
         public async Task<IActionResult> Remove(string id)
         {
             await _userService.RemoveUserAsync(id);
+
+            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
+        }
+        [HttpDelete("[action]/{id}")]
+        public async Task<IActionResult> RemoveRole(string id)
+        {
+            await _userService.RemoveRoleAsync(id);
 
             return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
         }
@@ -72,6 +79,37 @@ namespace ProjectApp.API.Controllers
 
             return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
         }
+
+        [HttpGet("[action]")]
+
+        public async Task<IActionResult> GetAllRoles()
+        {
+            return CreateActionResult(await _userService.GetAllRolesAsync());
+        }
+        [HttpPut("[action]")]
+        public async Task<IActionResult> UpdateRole(UpdateRoleDto updateRoleDto)
+        {
+            await _userService.UpdateRoleAync(updateRoleDto);
+
+            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
+        }
+
+
+        [HttpGet("[action]")]
+
+        public async Task<IActionResult> GetRoleAssignAsync(string id)
+        {
+            return CreateActionResult(await _userService.GetRoleAssignAsync(id));
+        }
+
+        [HttpPost("[action]")]
+
+        public async Task<IActionResult> RoleAssignAsync(string userId, List<RoleAssignDto> roleAssignDto)
+        {
+           await _userService.RoleAssignAsync(userId,roleAssignDto);
+            return CreateActionResult(CustomResponseDto<NoContentDto>.Success(204));
+        }
+
 
 
 

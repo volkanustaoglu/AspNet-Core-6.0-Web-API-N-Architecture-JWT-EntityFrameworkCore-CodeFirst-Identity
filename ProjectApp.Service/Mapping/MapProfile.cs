@@ -24,6 +24,7 @@ namespace ProjectApp.Service.Mapping
             CreateMap<AppUser, AppUserDto>().ReverseMap();
             CreateMap<AppUser, UpdateUserDto>().ReverseMap();
             CreateMap<AppRole, AppRoleDto>();
+            CreateMap<AppRole, UpdateRoleDto>();
         }
     }
 }

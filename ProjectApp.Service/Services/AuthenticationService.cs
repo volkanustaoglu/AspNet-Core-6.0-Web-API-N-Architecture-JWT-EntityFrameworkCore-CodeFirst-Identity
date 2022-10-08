@@ -46,8 +46,36 @@ namespace ProjectApp.Service.Services
 
             if (!await _userManager.CheckPasswordAsync(user,loginDto.Password))
             {
-                return CustomResponseDto<TokenDto>.Fail(400, "Email or Password is wrong");
+                await _userManager.AccessFailedAsync(user);
+              
+
+                int fail = await _userManager.GetAccessFailedCountAsync(user);
+
+                if (user.LockoutEnd>DateTime.Now)
+                {
+                    return CustomResponseDto<TokenDto>.Fail(400, "Hesabınız bir süreliğine kilitlenmiştir. Lütfen daha sonra tekrar deneyiniz.");
+                }
+
+                if (fail == 4)
+                {
+                    await _userManager.SetLockoutEndDateAsync(user, new DateTimeOffset(DateTime.Now.AddMinutes(20)));
+
+                    return CustomResponseDto<TokenDto>.Fail(400, "Hesabınız 3 başarısız girişten dolayı 20 dakika süreyle kitlenmiştir. Lütfen" +
+                        " Daha Sonra Tekrar Deneyiniz.");
+
+                }
+
+                return CustomResponseDto<TokenDto>.Fail(400, $" {fail} kez başarısız giriş");
+              
+              
             }
+
+            if (await _userManager.IsLockedOutAsync(user))
+            {
+                return CustomResponseDto<TokenDto>.Fail(400, "Hesabınız bir süreliğine kilitlenmiştir. Lütfen daha sonra tekrar deneyiniz");
+            }
+        
+
             var token = _tokenService.CreateToken(user);
 
             var userRefreshToken = await _userRefreshTokenRepository.Where(x => x.UserId == user.Id).SingleOrDefaultAsync();
@@ -61,7 +89,7 @@ namespace ProjectApp.Service.Services
                 userRefreshToken.Code = token.RefreshToken;
                 userRefreshToken.Expiration = token.RefreshTokenExpiration;
             }
-
+            await _userManager.ResetAccessFailedCountAsync(user);
             await _unitOfWork.CommitAsync();
             return CustomResponseDto<TokenDto>.Success(200, token);
          

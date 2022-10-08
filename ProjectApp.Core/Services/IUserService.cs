@@ -23,6 +23,12 @@ namespace ProjectApp.Core.Services
         Task<CustomResponseDto<AppUserDto>> GetUserByIdAsync(string id);
         Task<CustomResponseDto<UpdateUserDto>> UpdateUserAync(UpdateUserDto updateUserDto);
 
+        Task RemoveRoleAsync(string id);
+        Task<CustomResponseDto<List<AppRoleDto>>> GetAllRolesAsync();
+        Task<CustomResponseDto<UpdateRoleDto>> UpdateRoleAync(UpdateRoleDto updateRoleDto);
+
+        Task<CustomResponseDto<List<RoleAssignDto>>> GetRoleAssignAsync(string id);
+        Task RoleAssignAsync(string userId, List<RoleAssignDto> roleAssignDto);
 
 
     }

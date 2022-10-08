@@ -58,6 +58,14 @@ namespace ProjectApp.Service.Services
             return CustomResponseDto<AppUserDto>.Success(200, _mapper.Map<AppUserDto>(user));
         }
 
+        public async Task<CustomResponseDto<List<AppRoleDto>>> GetAllRolesAsync()
+        {
+            var roles = await _roleManager.Roles.ToListAsync();
+            var rolesDto = _mapper.Map<List<AppRoleDto>>(roles);
+
+            return CustomResponseDto<List<AppRoleDto>>.Success(200, rolesDto);
+        }
+
         public async Task<CustomResponseDto<List<AppUserDto>>> GetAllUsersAsync()
         {
             var users = await _userManager.Users.ToListAsync();
@@ -88,11 +96,80 @@ namespace ProjectApp.Service.Services
             return CustomResponseDto<AppUserDto>.Success(200, _mapper.Map<AppUserDto>(user));
         }
 
+        public async Task RemoveRoleAsync(string id)
+        {
+            var role =await _roleManager.FindByIdAsync(id);
+            role.RowOptions = 1;
+            await _roleManager.UpdateAsync(role);
+        }
+
         public async Task RemoveUserAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             user.RowOptions = 1;
             await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<CustomResponseDto<List<RoleAssignDto>>> GetRoleAssignAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            IQueryable<AppRole> roles = _roleManager.Roles;
+
+            List<string> userRoles = await _userManager.GetRolesAsync(user) as List<string>;
+
+            List<RoleAssignDto> roleAssignments = new List<RoleAssignDto>();
+
+            foreach (var role in roles)
+            {
+                RoleAssignDto r = new RoleAssignDto();
+                r.RoleId = role.Id;
+                r.RoleName =role.Name;
+                if (userRoles.Contains(role.Name))
+                {
+                    r.Exist = true;
+                }
+                else
+                {
+                    r.Exist = false;
+                }
+                roleAssignments.Add(r);
+            }
+            return CustomResponseDto<List<RoleAssignDto>>.Success(200, roleAssignments);
+        }
+
+        public async Task RoleAssignAsync(string userId,List<RoleAssignDto> roleAssignDto)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            foreach (var item in roleAssignDto)
+            {
+                if (item.Exist)
+                {
+                    await _userManager.AddToRoleAsync(user, item.RoleName);
+                }
+                else
+                {
+                    await _userManager.RemoveFromRoleAsync(user, item.RoleName);
+                }
+            }
+        }
+
+        public async Task<CustomResponseDto<UpdateRoleDto>> UpdateRoleAync(UpdateRoleDto updateRoleDto)
+        {
+            var role = await _roleManager.FindByIdAsync(updateRoleDto.Id);
+            if (role==null)
+            {
+                return CustomResponseDto<UpdateRoleDto>.Fail(404, "Role not found");
+            }
+            role.Name = updateRoleDto.Name ?? role.Name;
+            var roleUpdate = await _roleManager.UpdateAsync(role);
+            if (roleUpdate.Succeeded)
+            {
+                var roleDto = _mapper.Map<UpdateRoleDto>(role);
+
+                return CustomResponseDto<UpdateRoleDto>.Success(200, roleDto);
+            }
+            return CustomResponseDto<UpdateRoleDto>.Fail(404, "Error");
         }
 
         public async Task<CustomResponseDto<UpdateUserDto>> UpdateUserAync(UpdateUserDto updateUserDto)

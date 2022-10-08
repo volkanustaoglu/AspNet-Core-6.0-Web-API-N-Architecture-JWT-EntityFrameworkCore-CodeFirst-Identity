@@ -28,6 +28,7 @@ namespace ProjectApp.Repository.DbContexts
 
             modelBuilder.Entity<Product>().HasQueryFilter(b => b.RowOptions  == 0);
             modelBuilder.Entity<AppUser>().HasQueryFilter(b => b.RowOptions == 0);
+            modelBuilder.Entity<AppRole>().HasQueryFilter(b => b.RowOptions == 0);
 
             base.OnModelCreating(modelBuilder);
         }
